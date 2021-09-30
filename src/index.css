@@ -1,13 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+:root {
+  height: 100%;
+  font-size: 12px;
+  --red: #d22d23;
+  --blue: #091f2f;
+}
+button,
+select,
+input {
+  font: inherit;
+  outline: none;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Rubik", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url("./wave.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #58585b;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.container {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+#search input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 0.44444444444rem solid var(--blue);
+  border-radius: 0;
+  color: var(--red);
+  font-size: calc(30px + 45 * ((100vw - 480px) / 960));
+  height: auto;
+  letter-spacing: -1px;
+  line-height: 1.3;
+  padding: 0 40px 0 0;
+  width: 100%;
+}
+
+#search span {
+  color: var(--red);
+  font-size: calc(30px + 45 * ((100vw - 480px) / 960));
+}
+.blue {
+  color: var(--blue);
 }
