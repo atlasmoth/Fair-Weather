@@ -1,28 +1,24 @@
 import { useEffect } from "react";
 import fetcher from "../utils/fetcher";
 import getCoords from "../utils/getCoords";
+import { useHistory } from "react-router-dom";
 
 export default function Home(props) {
-  // useEffect(() => {
-  //   getCoords(window.navigator)
-  //     .then(async ({ latitude, longitude }) => {
-  //       const OPEN_CAGE_URL = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.REACT_APP_GEOCODE}&language=en&pretty=1`;
-  //       try {
-  //         const {
-  //           results: [
-  //             {
-  //               components: { city, state, country },
-  //               geometry: { lat, lng },
-  //             },
-  //           ],
-  //         } = await fetcher(window.fetch, OPEN_CAGE_URL, {});
-  //         console.log(city, state, country);
-  //         console.log(lat, lng);
-  //       } catch (error) {
-  //         throw error;
-  //       }
-  //     })
-  //     .catch(console.error);
-  // },[]);
+  const history = useHistory();
+
+  useEffect(() => {
+    getCoords(window.navigator)
+      .then(async ({ latitude, longitude }) => {
+        const reverseUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_OPENWEATHER}`;
+
+        try {
+          const [{ name }] = await fetcher(window.fetch, reverseUrl, {});
+          history.push(`/cities/${name}`);
+        } catch (error) {
+          throw error;
+        }
+      })
+      .catch(console.error);
+  }, [history]);
   return <h2>Welcome bruh</h2>;
 }
