@@ -1,5 +1,6 @@
 import React from "react";
 import ContentEditable from "react-contenteditable";
+import sanitizeHtml from "sanitize-html";
 
 export default class Editable extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class Editable extends React.Component {
         onChange={this.handleChange}
         tagName="p"
         onBlur={({ target }) => {
-          this.props.updateNotes(target.innerText, this.props.id);
+          this.props.updateNotes(sanitizeHtml(target.innerText), this.props.id);
         }}
       />
     );

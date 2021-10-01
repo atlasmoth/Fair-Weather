@@ -1,7 +1,7 @@
 const helper = (arr = []) => {
   const compare = (a, b) => {
-    var nameA = a.name.toUpperCase();
-    var nameB = b.name.toUpperCase();
+    var nameA = a.name.toUpperCase().trim();
+    var nameB = b.name.toUpperCase().trim();
     if (nameA < nameB) {
       return -1;
     }

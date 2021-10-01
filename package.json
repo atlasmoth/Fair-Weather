@@ -15,6 +15,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-skycons": "^0.8.8",
+    "sanitize-html": "^2.5.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

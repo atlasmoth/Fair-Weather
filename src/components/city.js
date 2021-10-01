@@ -25,7 +25,7 @@ function City(props) {
           s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
       )
     );
-  }, [props.favorites]);
+  }, [props.favorites, city]);
   useEffect(() => {
     fetcher(
       window.fetch,
@@ -33,7 +33,6 @@ function City(props) {
       {}
     )
       .then((data) => {
-        console.log(data);
         setStats(data);
         setLoading(false);
       })
