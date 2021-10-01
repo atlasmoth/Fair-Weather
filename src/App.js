@@ -7,6 +7,7 @@ import getCoords from "./utils/getCoords";
 import fetcher from "./utils/fetcher";
 import { refresh } from "./utils/refresh";
 import useCities from "./hooks/useCities";
+import { dataContext } from "./contexts/dataContext";
 
 function App() {
   const history = useHistory();
@@ -26,13 +27,14 @@ function App() {
   }, [history]);
   const [favorites, setFavorites] = useState(() => {
     const favesList = localStorage.getItem("favorites");
-    const parsedList = favesList ? JSON.parse(favesList) : [];
-    return parsedList;
+    return favesList ? JSON.parse(favesList) : [];
   });
-
+  const [largestCities, setLargestCities] = useState(() => {
+    const tempLargest = localStorage.getItem("largest");
+    return tempLargest ? JSON.parse(tempLargest) : [];
+  });
   const names = useRef(favorites.map((f) => f.name)).current;
   const key = useRef("favorites").current;
-
   const updateFavorites = (obj) => {
     const newObjs = [...favorites, { ...obj }];
     refresh(newObjs, key, setFavorites);
@@ -43,49 +45,37 @@ function App() {
   };
   useCities(names, key, setFavorites);
   return (
-    <main>
-      <div className="container">
-        <div className="split">
-          <Link to="/">
-            <h1 className="blue" style={{ fontSize: "2rem" }}>
-              Fair Weather
-            </h1>
-          </Link>
-          <div className="enlarge point" onClick={() => me()}>
-            <i className="fas fa-map-marked-alt red"></i>
+    <dataContext.Provider
+      value={{
+        favorites,
+        updateFavorites,
+        removeFavorites,
+        largestCities,
+        setLargestCities,
+      }}
+    >
+      <main>
+        <div className="container">
+          <div className="split">
+            <Link to="/">
+              <h1 className="title">🌪️ Fair Weather</h1>
+            </Link>
+            <div className="enlarge point" onClick={() => me()}>
+              <i className="fas fa-map-marked-alt red"></i>
+            </div>
           </div>
+
+          <Search />
+          <Switch>
+            <Route exact path="/cities/:city" component={City} />
+
+            <Route exact path="/" component={Home} />
+
+            <Route exact component={() => <Redirect to="/" />} />
+          </Switch>
         </div>
-
-        <Search />
-        <Switch>
-          <Route exact path="/cities/:city">
-            {(props) => {
-              return (
-                <City
-                  {...props}
-                  favorites={favorites}
-                  updateFavorites={updateFavorites}
-                  removeFavorites={removeFavorites}
-                />
-              );
-            }}
-          </Route>
-          <Route exact path="/">
-            {(props) => {
-              return (
-                <Home
-                  {...props}
-                  favorites={favorites}
-                  removeFavorites={removeFavorites}
-                />
-              );
-            }}
-          </Route>
-
-          <Route exact component={() => <Redirect to="/" />} />
-        </Switch>
-      </div>
-    </main>
+      </main>
+    </dataContext.Provider>
   );
 }
 

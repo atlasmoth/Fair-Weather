@@ -4,28 +4,35 @@ import { getIcon } from "./../utils/getIcon";
 import Skycons from "react-skycons";
 import { nanoid } from "nanoid";
 import Editable from "./editable";
+import { useDataContext } from "../contexts/dataContext";
 
 function City(props) {
+  const dataContext = useDataContext();
+  const { favorites, largestCities, updateFavorites, removeFavorites } =
+    dataContext;
   const { city } = props.match.params;
   const [stats, setStats] = useState(
-    () => props.favorites.find((s) => s.name === decodeURI(city)) ?? null
+    () =>
+      [...favorites, ...largestCities].find(
+        (s) => s.name === decodeURI(city)
+      ) ?? null
   );
   const [loading, setLoading] = useState(true);
 
   const [isFavorite, setIsFavorite] = useState(() =>
-    props.favorites.some(
+    favorites.some(
       (s) =>
         s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
     )
   );
   useEffect(() => {
     setIsFavorite(
-      props.favorites.some(
+      favorites.some(
         (s) =>
           s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
       )
     );
-  }, [props.favorites, city]);
+  }, [favorites, city]);
   useEffect(() => {
     fetcher(
       window.fetch,
@@ -45,24 +52,18 @@ function City(props) {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <div className="center-flex">
         {stats && (
           <>
             <h2 className="enlarge">
-              <span style={{ marginRight: "2rem" }}>
+              <span className="right-span">
                 {stats.name}, {stats?.sys?.country}
               </span>
               {isFavorite ? (
                 <span
                   className="point"
                   onClick={() => {
-                    props.removeFavorites(stats);
+                    removeFavorites(stats);
                   }}
                 >
                   <i className="fas fa-heart red"></i>
@@ -71,7 +72,7 @@ function City(props) {
                 <span
                   className="point"
                   onClick={() => {
-                    props.updateFavorites(stats);
+                    updateFavorites(stats);
                   }}
                 >
                   <i className="far fa-heart blue"></i>
@@ -84,15 +85,17 @@ function City(props) {
               animate={true}
               size={150}
               resizeClear={true}
-              style={{ backgroundColor: "transparent" }}
+              className="transparent"
             />
 
-            <h2 style={{ textTransform: "capitalize" }}>
-              {stats.weather[0].description}
-            </h2>
-            <h2>
-              {stats.main.temp} <sup>o</sup>C
-            </h2>
+            <h3 className="capital">{stats.weather[0].description}</h3>
+            <h3 className="options">
+              <span>
+                🌡️ {stats.main.temp} <sup>o</sup>C
+              </span>{" "}
+              <span>💨 {stats.wind.speed}m/s </span>
+              <span>🌦️{stats.main.humidity / 100} %</span>
+            </h3>
           </>
         )}
         {!loading && !stats && (
@@ -137,7 +140,7 @@ const NoteComponent = ({ city }) => {
 
   return (
     <div className="notes">
-      <h2 className="enlarge">Notes</h2>
+      <h2 className="enlarge">🖊️ Notes </h2>
       <ul>
         {notes.map((n) => (
           <li key={n.id}>
@@ -154,7 +157,7 @@ const NoteComponent = ({ city }) => {
         }}
       >
         <label htmlFor="note">
-          <h3>Add Note</h3>
+          <h3>Add Note </h3>
         </label>
 
         <textarea

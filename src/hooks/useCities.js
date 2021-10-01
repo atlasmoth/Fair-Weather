@@ -19,8 +19,5 @@ export default function useCities(names, key, dispatch) {
         refresh(data, key, dispatch);
       })
       .catch(console.log);
-    return () => {
-      dispatch(null);
-    };
   }, [names, key, dispatch]);
 }

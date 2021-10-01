@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import Skycons from "react-skycons";
+import { useDataContext } from "../contexts/dataContext";
 import { getIcon } from "./../utils/getIcon";
 
-export default function FavoriteCities({ favorites, removeFavorites }) {
+export default function FavoriteCities() {
+  const dataContext = useDataContext();
+  const { favorites, removeFavorites } = dataContext;
+
   return (
     <div>
-      <h2 className="title">Favorites</h2>
+      <h2 className="title">Favorites 💖</h2>
       <div className="list">
         {favorites.map((f) => (
           <FavoriteCity city={f} removeFavorites={removeFavorites} key={f.id} />
@@ -20,7 +24,7 @@ const FavoriteCity = ({ city, removeFavorites }) => {
     <div className="listitem">
       <h3>
         <Link to={`/cities/${encodeURIComponent(city.name)}`}>
-          <span style={{ marginRight: "2rem" }}>
+          <span className="right-span">
             {city.name}, {city?.sys?.country}
           </span>
         </Link>
@@ -40,12 +44,10 @@ const FavoriteCity = ({ city, removeFavorites }) => {
         animate={true}
         size={100}
         resizeClear={true}
-        style={{ backgroundColor: "transparent" }}
+        className="transparent"
       />
 
-      <h3 style={{ textTransform: "capitalize" }}>
-        {city.weather[0].description}
-      </h3>
+      <h3 className="capital">{city.weather[0].description}</h3>
       <h3>
         {city.main.temp} <sup>o</sup>C
       </h3>

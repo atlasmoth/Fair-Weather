@@ -1,9 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import Skycons from "react-skycons";
 import { getIcon } from "./../utils/getIcon";
 import { refresh } from "../utils/refresh";
 import useCities from "../hooks/useCities";
+import { useDataContext } from "../contexts/dataContext";
 
 const initialCities = [
   "Tokyo",
@@ -22,33 +23,31 @@ const initialCities = [
   "Chongqing",
   "Istanbul",
 ];
+
 export default function LargestCities() {
-  const [cities, setCities] = useState(() => {
-    const tempLargest = localStorage.getItem("largest");
-    return tempLargest ? JSON.parse(tempLargest) : null;
-  });
+  const dataContext = useDataContext();
+  const { largestCities, setLargestCities } = dataContext;
 
   const names = useRef(
-    cities ? cities.map((c) => c.name) : initialCities
+    largestCities.length > 0 ? largestCities.map((c) => c.name) : initialCities
   ).current;
   const key = useRef("largest").current;
-  useCities(names, key, setCities);
+  useCities(names, key, setLargestCities);
 
   return (
     <div>
-      <h2 className="title">Largest</h2>
+      <h2 className="title">Largest 🏔️</h2>
       <div className="list">
-        {cities &&
-          cities.map((c) => (
-            <LargeCity
-              key={c.id}
-              city={c}
-              removeCity={(obj) => {
-                const newObjs = cities.filter((f) => f.id !== obj.id);
-                refresh(newObjs, key, setCities);
-              }}
-            />
-          ))}
+        {largestCities.map((c) => (
+          <LargeCity
+            key={c.id}
+            city={c}
+            removeCity={(obj) => {
+              const newObjs = largestCities.filter((f) => f.id !== obj.id);
+              refresh(newObjs, key, setLargestCities);
+            }}
+          />
+        ))}
       </div>
     </div>
   );
@@ -59,7 +58,7 @@ const LargeCity = ({ city, removeCity }) => {
     <div className="listitem">
       <h3>
         <Link to={`/cities/${encodeURIComponent(city.name)}`}>
-          <span style={{ marginRight: "2rem" }}>
+          <span className="right-span">
             {city.name}, {city?.sys?.country}
           </span>
         </Link>
@@ -79,12 +78,10 @@ const LargeCity = ({ city, removeCity }) => {
         animate={true}
         size={100}
         resizeClear={true}
-        style={{ backgroundColor: "transparent" }}
+        className="transparent"
       />
 
-      <h3 style={{ textTransform: "capitalize" }}>
-        {city.weather[0].description}
-      </h3>
+      <h3 className="capital">{city.weather[0].description}</h3>
       <h3>
         {city.main.temp} <sup>o</sup>C
       </h3>

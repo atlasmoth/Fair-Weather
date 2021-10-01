@@ -14,17 +14,14 @@ export default function Search(props) {
       autoComplete="off"
     >
       <div id="search">
-        <div style={{ position: "relative" }}>
+        <div className="relative">
           <input
             type="text"
             name="search"
             value={value}
             onChange={({ target }) => setValue(target.value)}
           />
-          <span
-            style={{ position: "absolute", right: 0, bottom: 10 }}
-            className="blue"
-          >
+          <span style={{ right: 0, bottom: 10 }} className="blue absolute">
             <i className="fas fa-search"></i>
           </span>
         </div>

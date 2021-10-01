@@ -108,11 +108,10 @@ textarea {
   color: var(--blue);
 }
 .list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-auto-rows: minmax(100px, auto);
-  max-height: 300px;
-  overflow-y: scroll;
+  display: flex;
+  align-items: center;
+
+  overflow-x: scroll;
   padding: 1rem;
 }
 
@@ -135,6 +134,9 @@ textarea {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 .listitem {
+  flex-basis: 250px;
+  flex-shrink: 0;
+  margin: 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,5 +145,30 @@ textarea {
 .split {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.options span {
+  margin: 0px 5px;
+  font-family: 10px;
+}
+.capital {
+  text-transform: "capitalize";
+}
+.transparent {
+  background-color: transparent;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.right-span {
+  margin-right: 2rem;
+}
+.center-flex {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
