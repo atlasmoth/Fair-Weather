@@ -2,10 +2,11 @@ import { Switch, Route, Redirect, Link, useHistory } from "react-router-dom";
 import Home from "./components/home";
 import City from "./components/city";
 import Search from "./components/search";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import getCoords from "./utils/getCoords";
 import fetcher from "./utils/fetcher";
 import { refresh } from "./utils/refresh";
+import useCities from "./hooks/useCities";
 
 function App() {
   const history = useHistory();
@@ -29,15 +30,18 @@ function App() {
     return parsedList;
   });
 
+  const names = useRef(favorites.map((f) => f.name)).current;
+  const key = useRef("favorites").current;
+
   const updateFavorites = (obj) => {
     const newObjs = [...favorites, { ...obj }];
-    refresh(newObjs, "favorites", setFavorites);
+    refresh(newObjs, key, setFavorites);
   };
   const removeFavorites = (obj) => {
     const newObjs = favorites.filter((f) => f.id !== obj.id);
-
-    refresh(newObjs, "favorites", setFavorites);
+    refresh(newObjs, key, setFavorites);
   };
+  useCities(names, key, setFavorites);
   return (
     <main>
       <div className="container">

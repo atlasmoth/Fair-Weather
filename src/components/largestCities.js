@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
-import fetcher from "../utils/fetcher";
-import helper from "../utils/helper";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Skycons from "react-skycons";
 import { getIcon } from "./../utils/getIcon";
 import { refresh } from "../utils/refresh";
+import useCities from "../hooks/useCities";
 
 const initialCities = [
   "Tokyo",
@@ -30,35 +28,12 @@ export default function LargestCities(props) {
     return tempLargest ? JSON.parse(tempLargest) : null;
   });
 
-  useEffect(() => {
-    let names;
-    if (!cities) {
-      names = initialCities;
-    }
-    if (cities) {
-      names = cities.map((c) => c.name);
-    }
-    Promise.all([
-      ...names.map((i) =>
-        fetcher(
-          window.fetch,
-          `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${encodeURIComponent(
-            i
-          )}&APPID=${process.env.REACT_APP_OPENWEATHER}`,
-          {}
-        )
-      ),
-    ])
-      .then((data) => {
-        const sorted = helper(data);
-        localStorage.setItem("largest", JSON.stringify(sorted));
-        setCities(sorted);
-      })
-      .catch(console.log);
-    return () => {
-      setCities(null);
-    };
-  }, []);
+  const names = useRef(
+    cities ? cities.map((c) => c.name) : initialCities
+  ).current;
+  const key = useRef("largest").current;
+  useCities(names, key, setCities);
+
   return (
     <div>
       <h2 className="title">Largest</h2>
@@ -70,7 +45,7 @@ export default function LargestCities(props) {
               city={c}
               removeCity={(obj) => {
                 const newObjs = cities.filter((f) => f.id !== obj.id);
-                refresh(newObjs, "largest", setCities);
+                refresh(newObjs, key, setCities);
               }}
             />
           ))}
