@@ -7,30 +7,42 @@ import Editable from "./editable";
 
 function City(props) {
   const { city } = props.match.params;
-  const [stats, setStats] = useState();
+  const [stats, setStats] = useState(
+    () => props.favorites.find((s) => s.name === decodeURI(city)) ?? null
+  );
   const [loading, setLoading] = useState(true);
 
-  const [isFavorite, setIsFavorite] = useState(false);
-
+  const [isFavorite, setIsFavorite] = useState(() =>
+    props.favorites.some(
+      (s) =>
+        s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
+    )
+  );
   useEffect(() => {
-    setStats(props.favorites.find((s) => s.name === decodeURI(city)) ?? null);
+    setIsFavorite(
+      props.favorites.some(
+        (s) =>
+          s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
+      )
+    );
+  }, [props.favorites]);
+  useEffect(() => {
     fetcher(
       window.fetch,
       `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&APPID=${process.env.REACT_APP_OPENWEATHER}`,
       {}
     )
       .then((data) => {
+        console.log(data);
         setStats(data);
         setLoading(false);
-        setIsFavorite(props.favorites.some((s) => s.id === data.id));
       })
       .catch(() => setLoading(false));
     return () => {
       setLoading(true);
       setStats(null);
-      setIsFavorite(false);
     };
-  }, [setStats, city, props.favorites]);
+  }, [setStats, city]);
 
   return (
     <>
@@ -51,7 +63,6 @@ function City(props) {
                 <span
                   className="point"
                   onClick={() => {
-                    setIsFavorite((s) => !s);
                     props.removeFavorites(stats);
                   }}
                 >
@@ -61,8 +72,6 @@ function City(props) {
                 <span
                   className="point"
                   onClick={() => {
-                    setIsFavorite((s) => !s);
-
                     props.updateFavorites(stats);
                   }}
                 >

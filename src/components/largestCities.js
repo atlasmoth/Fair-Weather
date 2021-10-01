@@ -22,7 +22,7 @@ const initialCities = [
   "Chongqing",
   "Istanbul",
 ];
-export default function LargestCities(props) {
+export default function LargestCities() {
   const [cities, setCities] = useState(() => {
     const tempLargest = localStorage.getItem("largest");
     return tempLargest ? JSON.parse(tempLargest) : null;
