@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import fetcher from "../utils/fetcher";
 import { getIcon } from "./../utils/getIcon";
 import Skycons from "react-skycons";
 import { nanoid } from "nanoid";
 import Editable from "./editable";
 
-export default function City(props) {
+function City(props) {
   const { city } = props.match.params;
   const [stats, setStats] = useState();
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function City(props) {
       setStats(null);
       setIsFavorite(false);
     };
-  }, [setStats, city]);
+  }, [setStats, city, props.favorites]);
 
   return (
     <>
@@ -158,3 +158,4 @@ const NoteComponent = ({ city }) => {
     </div>
   );
 };
+export default memo(City);

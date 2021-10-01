@@ -11,6 +11,7 @@ export default function Search(props) {
         e.preventDefault();
         history.push(`/cities/${encodeURIComponent(value)}`);
       }}
+      autoComplete="off"
     >
       <div id="search">
         <div style={{ position: "relative" }}>
