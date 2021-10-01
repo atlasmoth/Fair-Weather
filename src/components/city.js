@@ -13,6 +13,7 @@ function City(props) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
+    setStats(props.favorites.find((s) => s.name === decodeURI(city)) ?? null);
     fetcher(
       window.fetch,
       `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&APPID=${process.env.REACT_APP_OPENWEATHER}`,

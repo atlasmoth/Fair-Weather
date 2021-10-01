@@ -3,9 +3,9 @@ import Home from "./components/home";
 import City from "./components/city";
 import Search from "./components/search";
 import { useState, useCallback } from "react";
-import helper from "./utils/helper";
 import getCoords from "./utils/getCoords";
 import fetcher from "./utils/fetcher";
+import { refresh } from "./utils/refresh";
 
 function App() {
   const history = useHistory();
@@ -29,37 +29,14 @@ function App() {
     return parsedList;
   });
 
-  const refresh = (names) => {
-    console.log("this has run");
-    Promise.all([
-      ...names.map((i) =>
-        fetcher(
-          window.fetch,
-          `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${encodeURIComponent(
-            i
-          )}&APPID=${process.env.REACT_APP_OPENWEATHER}`,
-          {}
-        )
-      ),
-    ])
-      .then((data) => {
-        const sorted = helper(data);
-        localStorage.setItem("favorites", JSON.stringify(sorted));
-        setFavorites(sorted);
-      })
-      .catch(console.log);
-  };
   const updateFavorites = (obj) => {
-    let newObjs;
-
-    newObjs = helper([...favorites, { ...obj }]);
-    const names = newObjs.map((n) => n.name);
-    refresh(names);
+    const newObjs = [...favorites, { ...obj }];
+    refresh(newObjs, "favorites", setFavorites);
   };
   const removeFavorites = (obj) => {
     const newObjs = favorites.filter((f) => f.id !== obj.id);
-    const names = newObjs.map((n) => n.name);
-    refresh(names);
+
+    refresh(newObjs, "favorites", setFavorites);
   };
   return (
     <main>

@@ -5,6 +5,7 @@ import helper from "../utils/helper";
 import { Link } from "react-router-dom";
 import Skycons from "react-skycons";
 import { getIcon } from "./../utils/getIcon";
+import { refresh } from "../utils/refresh";
 
 const initialCities = [
   "Tokyo",
@@ -28,7 +29,15 @@ export default function LargestCities(props) {
     const tempLargest = localStorage.getItem("largest");
     return tempLargest ? JSON.parse(tempLargest) : null;
   });
-  const updateCities = (names) => {
+
+  useEffect(() => {
+    let names;
+    if (!cities) {
+      names = initialCities;
+    }
+    if (cities) {
+      names = cities.map((c) => c.name);
+    }
     Promise.all([
       ...names.map((i) =>
         fetcher(
@@ -46,16 +55,6 @@ export default function LargestCities(props) {
         setCities(sorted);
       })
       .catch(console.log);
-  };
-  useEffect(() => {
-    let names;
-    if (!cities) {
-      names = initialCities;
-    }
-    if (cities) {
-      names = cities.map((c) => c.name);
-    }
-    updateCities(names);
     return () => {
       setCities(null);
     };
@@ -71,7 +70,7 @@ export default function LargestCities(props) {
               city={c}
               removeCity={(obj) => {
                 const newObjs = cities.filter((f) => f.id !== obj.id);
-                updateCities(newObjs.map((n) => n.name));
+                refresh(newObjs, "largest", setCities);
               }}
             />
           ))}
