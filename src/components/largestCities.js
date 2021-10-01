@@ -1,38 +1,11 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 import Skycons from "react-skycons";
 import { getIcon } from "./../utils/getIcon";
-import { refresh } from "../utils/refresh";
-import useCities from "../hooks/useCities";
 import { useDataContext } from "../contexts/dataContext";
-
-const initialCities = [
-  "Tokyo",
-  "Delhi",
-  "Shanghai",
-  "São Paulo",
-  "Mexico City",
-  "Cairo",
-  "Mumbai",
-  "Beijing",
-  "Dhaka",
-  "Osaka",
-  "New York",
-  "Karachi",
-  "Buenos Aires",
-  "Chongqing",
-  "Istanbul",
-];
 
 export default function LargestCities() {
   const dataContext = useDataContext();
-  const { largestCities, setLargestCities } = dataContext;
-
-  const names = useRef(
-    largestCities.length > 0 ? largestCities.map((c) => c.name) : initialCities
-  ).current;
-  const key = useRef("largest").current;
-  useCities(names, key, setLargestCities);
+  const { largestCities, removeLargeCity } = dataContext;
 
   return (
     <div>
@@ -42,10 +15,7 @@ export default function LargestCities() {
           <LargeCity
             key={c.id}
             city={c}
-            removeCity={(obj) => {
-              const newObjs = largestCities.filter((f) => f.id !== obj.id);
-              refresh(newObjs, key, setLargestCities);
-            }}
+            removeCity={() => removeLargeCity(c)}
           />
         ))}
       </div>
@@ -83,7 +53,7 @@ const LargeCity = ({ city, removeCity }) => {
 
       <h3 className="capital">{city.weather[0].description}</h3>
       <h3>
-        {city.main.temp} <sup>o</sup>C
+        🌡️ {city.main.temp} <sup>o</sup>C
       </h3>
     </div>
   );

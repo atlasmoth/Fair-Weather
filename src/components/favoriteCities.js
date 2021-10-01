@@ -49,7 +49,7 @@ const FavoriteCity = ({ city, removeFavorites }) => {
 
       <h3 className="capital">{city.weather[0].description}</h3>
       <h3>
-        {city.main.temp} <sup>o</sup>C
+        🌡️ {city.main.temp} <sup>o</sup>C
       </h3>
     </div>
   );
