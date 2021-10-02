@@ -4,7 +4,7 @@ import { refresh } from "../utils/refresh";
 
 export default function useCities(names, key, dispatch) {
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       ...names.map((i) =>
         fetcher(
           window.fetch,
@@ -15,7 +15,11 @@ export default function useCities(names, key, dispatch) {
         )
       ),
     ])
-      .then((data) => {
+      .then((objs) => {
+        const data = objs
+          .filter((o) => o.status === "fulfilled")
+          .map((o) => o.value);
+
         refresh(data, key, dispatch);
       })
       .catch(console.log);

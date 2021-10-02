@@ -8,6 +8,7 @@ import fetcher from "./utils/fetcher";
 import { refresh } from "./utils/refresh";
 import useCities from "./hooks/useCities";
 import { dataContext } from "./contexts/dataContext";
+import { fetchFromLocal } from "./utils/helper";
 
 const initialCities = [
   "Tokyo",
@@ -42,33 +43,34 @@ function App() {
       })
       .catch(console.error);
   }, [history]);
-  const [favorites, setFavorites] = useState(() => {
-    const favesList = localStorage.getItem("favorites");
-    return favesList ? JSON.parse(favesList) : [];
-  });
-  const [largestCities, setLargestCities] = useState(() => {
-    const tempLargest = localStorage.getItem("largest");
-    return tempLargest ? JSON.parse(tempLargest) : [];
-  });
+  const [favorites, setFavorites] = useState(fetchFromLocal("favorites"));
+  const [largestCities, setLargestCities] = useState(fetchFromLocal("largest"));
 
   const favoritesKey = useRef("favorites").current;
   const largestKey = useRef("largest").current;
 
   const updateFavorites = (obj) => {
-    const newObjs = [...favorites, { ...obj }];
-    refresh(newObjs, favoritesKey, setFavorites);
+    refresh([...favorites, { ...obj }], favoritesKey, setFavorites);
   };
   const removeFavorites = (obj) => {
-    const newObjs = favorites.filter((f) => f.id !== obj.id);
-    refresh(newObjs, favoritesKey, setFavorites);
+    refresh(
+      [...favorites.filter((f) => f.id !== obj.id)],
+      favoritesKey,
+      setFavorites
+    );
   };
   const removeLargeCity = (obj) => {
-    const newObjs = largestCities.filter((f) => f.id !== obj.id);
-    refresh(newObjs, largestKey, setLargestCities);
+    refresh(
+      [...largestCities.filter((f) => f.id !== obj.id)],
+      largestKey,
+      setLargestCities
+    );
   };
   const favoriteNames = useRef(favorites.map((f) => f.name)).current;
   const largestNames = useRef(
-    largestCities.length > 0 ? largestCities.map((c) => c.name) : initialCities
+    largestCities.length > 0
+      ? largestCities.map((c) => c.name)
+      : [...initialCities]
   ).current;
   useCities(favoriteNames, favoritesKey, setFavorites);
   useCities(largestNames, largestKey, setLargestCities);

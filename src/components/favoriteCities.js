@@ -12,7 +12,11 @@ export default function FavoriteCities() {
       <h2 className="title">Favorites 💖</h2>
       <div className="list">
         {favorites.map((f) => (
-          <FavoriteCity city={f} removeFavorites={removeFavorites} key={f.id} />
+          <FavoriteCity
+            city={f}
+            removeFavorites={() => removeFavorites(f)}
+            key={f.id}
+          />
         ))}
       </div>
     </div>
@@ -32,10 +36,10 @@ const FavoriteCity = ({ city, removeFavorites }) => {
         <span
           className="point"
           onClick={() => {
-            removeFavorites(city);
+            removeFavorites();
           }}
         >
-          <i className="fas fa-heart red"></i>
+          💖
         </span>
       </h3>
       <Skycons

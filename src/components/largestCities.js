@@ -34,9 +34,9 @@ const LargeCity = ({ city, removeCity }) => {
         </Link>
 
         <span
-          className="point"
+          className="point cancel"
           onClick={() => {
-            removeCity(city);
+            removeCity();
           }}
         >
           <i className="fas fa-times red"></i>

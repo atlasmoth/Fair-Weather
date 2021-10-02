@@ -1,7 +1,7 @@
-import helper from "./helper";
+import { sort } from "./helper";
 
 export const refresh = (objs, token, dispatch) => {
-  const sorted = helper(objs);
+  const sorted = sort(objs);
   localStorage.setItem(token, JSON.stringify(sorted));
   dispatch(sorted);
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function Search(props) {
+export default function Search() {
   const [value, setValue] = useState("");
   const history = useHistory();
 

@@ -1,4 +1,4 @@
-const helper = (arr = []) => {
+export const sort = (arr = []) => {
   const compare = (a, b) => {
     var nameA = a.name.toUpperCase().trim();
     var nameB = b.name.toUpperCase().trim();
@@ -13,5 +13,5 @@ const helper = (arr = []) => {
   };
   return [...arr].sort(compare);
 };
-
-export default helper;
+export const fetchFromLocal = (key = "") =>
+  JSON.parse(localStorage.getItem(key) ?? "[]");
