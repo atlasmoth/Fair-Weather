@@ -9,6 +9,9 @@
 - Save favorite cities to localstorage.
 - Find weather in the world's most populated cities.
 - Create, edit and delete notes scoped to the context of each city.
+- Testing with React testing library.
+- Persist favorites and largest cities to local storage and refresh cache upon app reload.
+  NB => My API subscription is rate limited.
 
 ![image image1.png](./image1.png)
 ![image image2.png](./image2.png)
