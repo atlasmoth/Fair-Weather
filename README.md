@@ -2,7 +2,7 @@
 
 **API** [Open Weather Map](https://openweathermap.org/)
 
-**Live App** (https://fair-weather.vercel.app/)[https://fair-weather.vercel.app/]
+**Live App** [https://fair-weather.vercel.app/](https://fair-weather.vercel.app/)
 
 ## Features
 
