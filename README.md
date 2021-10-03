@@ -2,7 +2,7 @@
 
 **API** [Open Weather Map](https://openweathermap.org/)
 
-**Live App** [https://fair-weather.vercel.app/](https://fair-weather.vercel.app/)
+**Live App** [https://fair-weather-krk8m35mo-atlasmoth.vercel.app/](https://fair-weather-krk8m35mo-atlasmoth.vercel.app/)
 
 ## Features
 
