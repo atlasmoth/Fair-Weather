@@ -8,7 +8,7 @@ import fetcher from "./utils/fetcher";
 import { refresh } from "./utils/refresh";
 import useCities from "./hooks/useCities";
 import { dataContext } from "./contexts/dataContext";
-import { fetchFromLocal } from "./utils/helper";
+import { fetchFromLocal, sort } from "./utils/helper";
 import initialCities from "./initialCities";
 
 function App() {
@@ -29,7 +29,9 @@ function App() {
   }, [history]);
   const [favorites, setFavorites] = useState(fetchFromLocal("favorites"));
   const [largestCities, setLargestCities] = useState(
-    JSON.parse(localStorage.getItem("largest") ?? JSON.stringify(initialCities))
+    JSON.parse(
+      localStorage.getItem("largest") ?? JSON.stringify(sort(initialCities))
+    )
   );
 
   const favoritesKey = useRef("favorites").current;
