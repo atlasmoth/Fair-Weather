@@ -2,6 +2,8 @@
 
 **API** [Open Weather Map](https://openweathermap.org/)
 
+**Live App** (https://fair-weather.vercel.app/)[https://fair-weather.vercel.app/]
+
 ## Features
 
 - Find weather in your city with openweathermap geocoding.
