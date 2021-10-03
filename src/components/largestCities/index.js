@@ -24,6 +24,9 @@ export default function LargestCities() {
 }
 
 export const LargeCity = ({ city, removeCity }) => {
+  {
+    /* test this */
+  }
   return (
     <div className="listitem">
       <h3>
