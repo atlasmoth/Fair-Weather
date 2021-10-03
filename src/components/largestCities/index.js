@@ -9,7 +9,7 @@ export default function LargestCities() {
 
   return (
     <div>
-      <h2 className="title">Largest 🏔️</h2>
+      <h2 className="title">Largest 🏔️ </h2>
       <div className="list">
         {largestCities.map((c) => (
           <LargeCity
