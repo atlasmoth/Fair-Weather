@@ -9,24 +9,8 @@ import { refresh } from "./utils/refresh";
 import useCities from "./hooks/useCities";
 import { dataContext } from "./contexts/dataContext";
 import { fetchFromLocal } from "./utils/helper";
+import initialCities from "./initialCities";
 
-const initialCities = [
-  "Tokyo",
-  "Delhi",
-  "Shanghai",
-  "São Paulo",
-  "Mexico City",
-  "Cairo",
-  "Mumbai",
-  "Beijing",
-  "Dhaka",
-  "Osaka",
-  "New York",
-  "Karachi",
-  "Buenos Aires",
-  "Chongqing",
-  "Istanbul",
-];
 function App() {
   const history = useHistory();
   const me = useCallback(() => {
@@ -44,7 +28,9 @@ function App() {
       .catch(console.error);
   }, [history]);
   const [favorites, setFavorites] = useState(fetchFromLocal("favorites"));
-  const [largestCities, setLargestCities] = useState(fetchFromLocal("largest"));
+  const [largestCities, setLargestCities] = useState(
+    JSON.parse(localStorage.getItem("largest") ?? JSON.stringify(initialCities))
+  );
 
   const favoritesKey = useRef("favorites").current;
   const largestKey = useRef("largest").current;
@@ -66,14 +52,11 @@ function App() {
       setLargestCities
     );
   };
-  const favoriteNames = useRef(favorites.map((f) => f.name)).current;
-  const largestNames = useRef(
-    largestCities.length > 0
-      ? largestCities.map((c) => c.name)
-      : [...initialCities]
-  ).current;
-  useCities(favoriteNames, favoritesKey, setFavorites);
-  useCities(largestNames, largestKey, setLargestCities);
+  const favoritesRef = useRef(favorites).current;
+  const largestRef = useRef(largestCities).current;
+
+  useCities(favoritesRef, favoritesKey, setFavorites);
+  useCities(largestRef, largestKey, setLargestCities);
   return (
     <dataContext.Provider
       value={{
