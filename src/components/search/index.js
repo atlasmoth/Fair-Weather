@@ -9,7 +9,8 @@ export default function Search() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        history.push(`/cities/${encodeURIComponent(value)}`);
+        value.length > 0 &&
+          history.push(`/cities/${encodeURIComponent(value)}`);
       }}
       autoComplete="off"
     >

@@ -1,21 +1,21 @@
 import { Link } from "react-router-dom";
 import Skycons from "react-skycons";
-import { getIcon } from "./../utils/getIcon";
-import { useDataContext } from "../contexts/dataContext";
+import { useDataContext } from "./../../contexts/dataContext";
+import { getIcon } from "./../../utils/getIcon";
 
-export default function LargestCities() {
+export default function FavoriteCities() {
   const dataContext = useDataContext();
-  const { largestCities, removeLargeCity } = dataContext;
+  const { favorites, removeFavorites } = dataContext;
 
   return (
     <div>
-      <h2 className="title">Largest 🏔️</h2>
+      <h2 className="title">Favorites 💖</h2>
       <div className="list">
-        {largestCities.map((c) => (
-          <LargeCity
-            key={c.id}
-            city={c}
-            removeCity={() => removeLargeCity(c)}
+        {favorites.map((f) => (
+          <FavoriteCity
+            city={f}
+            removeFavorites={() => removeFavorites(f)}
+            key={f.id}
           />
         ))}
       </div>
@@ -23,7 +23,7 @@ export default function LargestCities() {
   );
 }
 
-const LargeCity = ({ city, removeCity }) => {
+export const FavoriteCity = ({ city, removeFavorites }) => {
   return (
     <div className="listitem">
       <h3>
@@ -34,12 +34,12 @@ const LargeCity = ({ city, removeCity }) => {
         </Link>
 
         <span
-          className="point cancel"
+          className="point"
           onClick={() => {
-            removeCity();
+            removeFavorites();
           }}
         >
-          <i className="fas fa-times red"></i>
+          💖
         </span>
       </h3>
       <Skycons

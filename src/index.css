@@ -190,7 +190,7 @@ textarea {
   --stroke: #d1d6ee;
   --stroke-active: #ec4472;
   --fill: #fff;
-  --fill-active: #ec638e;
+  --fill-active: var(--red);
   --shadow: rgba(0, 9, 61, 0.25);
   cursor: pointer;
   position: relative;

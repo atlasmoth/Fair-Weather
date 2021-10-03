@@ -1,11 +1,11 @@
-import { memo, useEffect, useState } from "react";
-import fetcher from "../utils/fetcher";
-import { getIcon } from "./../utils/getIcon";
+import { useEffect, useState } from "react";
+import fetcher from "./../../utils/fetcher";
+import { getIcon } from "./../../utils/getIcon";
 import Skycons from "react-skycons";
 import { nanoid } from "nanoid";
-import Editable from "./editable";
-import { useDataContext } from "../contexts/dataContext";
-import { fetchFromLocal } from "../utils/helper";
+import Editable from "./../editable";
+import { useDataContext } from "./../../contexts/dataContext";
+import { fetchFromLocal } from "./../../utils/helper";
 
 function City(props) {
   const dataContext = useDataContext();
@@ -25,14 +25,16 @@ function City(props) {
   const [isFavorite, setIsFavorite] = useState(() =>
     favorites.some(
       (s) =>
-        s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
+        s.name.toLowerCase().trim() ===
+        decodeURIComponent(city).toLowerCase().trim()
     )
   );
   useEffect(() => {
     setIsFavorite(
       favorites.some(
         (s) =>
-          s.name.toLowerCase().trim() === decodeURI(city).toLowerCase().trim()
+          s.name.toLowerCase().trim() ===
+          decodeURIComponent(city).toLowerCase().trim()
       )
     );
   }, [favorites, city]);
@@ -46,7 +48,9 @@ function City(props) {
         setStats(data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        setLoading(false);
+      });
     return () => {
       setLoading(true);
       setStats(null);
@@ -110,7 +114,7 @@ function City(props) {
   );
 }
 
-const NoteComponent = ({ city }) => {
+export const NoteComponent = ({ city }) => {
   const [notes, setNotes] = useState(fetchFromLocal(city));
   const updateNotes = (note, id) => {
     let newNotes;
@@ -165,4 +169,4 @@ const NoteComponent = ({ city }) => {
     </div>
   );
 };
-export default memo(City);
+export default City;
